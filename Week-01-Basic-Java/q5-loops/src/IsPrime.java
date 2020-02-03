@@ -3,6 +3,11 @@ import java.util.Scanner;
 public class IsPrime {
   public static boolean isPrime(int number) {
     boolean flag = true;
+
+    if (number == 0 || number == 1) {
+      flag = false;
+    }
+
     for (int i = 2; i <= Math.sqrt(number); i++) {
       if (number % i == 0) {
         flag = false;

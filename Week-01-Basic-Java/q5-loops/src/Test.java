@@ -2,12 +2,10 @@ import java.util.Scanner;
 
 public class Test {
   private static void out(int aNumber) {
-    if (aNumber >= 0) {
-      if (aNumber == 0) {
-        System.out.println("first string");
-      } else {
-        System.out.println("second string");
-      }
+    if (aNumber == 0) {
+      System.out.println("first string");
+    } else if (aNumber > 0) {
+      System.out.println("second string");
     }
     System.out.println("third string");
   }
