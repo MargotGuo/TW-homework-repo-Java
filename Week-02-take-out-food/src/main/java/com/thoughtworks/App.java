@@ -1,8 +1,17 @@
 package com.thoughtworks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
+  private static final String RECEIPT_TITLE = "============= 订餐明细 =============\n";
+  private static final String PROMOTION_DECLARATION = "使用优惠:\n";
+  private static final String PROMOTIONA = "满30减6元，省6元\n";
+  private static final String PROMOTIONB = "指定菜品半价(黄焖鸡，凉皮)，省13元\n";
+  private static final String SPLIT_LINE = "-----------------------------------\n";
+  private static final String RECEIPT_FOOTER = "===================================";
 
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
@@ -19,15 +28,62 @@ public class App {
    */
 
   public static String bestCharge(String selectedItems) {
-    // 此处补全代码
-    CalcDetail calcDetail = new CalcDetail(selectedItems);
-    String outputInfo = "============= 订餐明细 =============\n"
-        + calcDetail.getAllFood()
-        + "-----------------------------------\n"
-        + calcDetail.getDiscountInfo()
-        + "总计：" + calcDetail.getFinalPrice() + "元\n"
-        + "===================================";;
-    return outputInfo;
+    Food[] foodList = saveFoodByArray(selectedItems);
+    double sumPriceBeforeDiscount = getSumPriceBeforeDiscount(foodList);
+    double discountInPlanA = sumPriceBeforeDiscount >= 30 ? 6 : 0;
+    double discountInPlanB = getDiscountInPlaneB(foodList);
+    double finalDiscount = Math.max(discountInPlanA, discountInPlanB);
+    return String.format("%s%s%s%s%s%s",
+        RECEIPT_TITLE,
+        getAllFoodInfo(foodList),
+        SPLIT_LINE,
+        finalDiscount == 0 ? "" : getDiscountInfo(discountInPlanA, discountInPlanB),
+        String.format("总计：%s元\n", formatDoubleNumber(sumPriceBeforeDiscount - finalDiscount)),
+        RECEIPT_FOOTER);
+  }
+
+  public static Food[] saveFoodByArray(String selectedItems) {
+    String[] itemArray = selectedItems.split(",");
+    List<Food> foodList = new ArrayList<>();
+    for (String foodInfo: itemArray) {
+      String foodId = foodInfo.split(" x ")[0];
+      int foodCount = Integer.parseInt(foodInfo.split(" x ")[1]);
+      foodList.add(new Food(foodId, foodCount));
+    }
+    return foodList.toArray(new Food[0]);
+  }
+
+  public static double getSumPriceBeforeDiscount(Food[] foodList) {
+    double sumBeforeDiscount = 0;
+    for (Food food : foodList) {
+      double sumPriceOfThisFood = getItemPrices()[food.getIndex()] * food.getCount();
+      sumBeforeDiscount += sumPriceOfThisFood;
+    }
+    return sumBeforeDiscount;
+  }
+
+  public static double getDiscountInPlaneB(Food[] foodList) {
+    double discountInPlanB = 0;
+    for (Food food : foodList) {
+      if (Arrays.asList(getHalfPriceIds()).contains(food.getFoodID())) {
+        discountInPlanB += 0.5 * getItemPrices()[food.getIndex()] * food.getCount();
+      }
+    }
+    return discountInPlanB;
+  }
+
+  public static String getAllFoodInfo(Food[] foodList) {
+    StringBuilder allFoodInfo = new StringBuilder();
+    for (Food food : foodList) {
+      allFoodInfo.append(String.format("%s x %d = %s元\n", food.getName(), food.getCount(),
+          formatDoubleNumber(getItemPrices()[food.getIndex()] * food.getCount())));
+    }
+    return allFoodInfo.toString();
+  }
+
+  public static String getDiscountInfo(double discountInPlanA, double discountInPlanB) {
+    return String.format("%s%s%s",
+        PROMOTION_DECLARATION, (discountInPlanA >= discountInPlanB ? PROMOTIONA : PROMOTIONB), SPLIT_LINE);
   }
 
   /**
@@ -56,5 +112,13 @@ public class App {
    */
   public static String[] getHalfPriceIds() {
     return new String[]{"ITEM0001", "ITEM0022"};
+  }
+
+  /* 如果double类型的数字的数值为整数，则转换成整型输出，如果不为整数，则输出原数字 */
+  public static String formatDoubleNumber(double inputNumber) {
+    if(Math.round(inputNumber) - inputNumber == 0) {
+      return String.valueOf((int)inputNumber);
+    }
+    return String.valueOf(inputNumber);
   }
 }
