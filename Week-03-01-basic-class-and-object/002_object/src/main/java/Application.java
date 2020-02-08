@@ -1,9 +1,6 @@
 import model.Student;
 import model.Teacher;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 public class Application {
 
     public static void main(String[] args) {
