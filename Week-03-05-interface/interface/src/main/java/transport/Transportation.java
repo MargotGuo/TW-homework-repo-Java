@@ -1,5 +1,5 @@
 package transport;
 
 public interface Transportation {
-  public boolean isEnough (int money);
+  public abstract boolean isEnough (int money);
 }
