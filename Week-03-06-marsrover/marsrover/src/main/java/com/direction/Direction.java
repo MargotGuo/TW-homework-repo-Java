@@ -1,11 +1,15 @@
 package com.direction;
 
-public abstract class Direction implements Turn {
+public abstract class Direction {
   private char direction;
 
   public void setDirection(char direction) {
     this.direction = direction;
   }
+
+  public abstract Direction turnLeft();
+
+  public abstract Direction turnRight();
 
   @Override
   public boolean equals(Object o) {
