@@ -16,7 +16,7 @@ public class CardMachine {
     return outputCards;
   }
 
-  public List<Card> getAllCards() {
+  private List<Card> getAllCards() {
     List<Card> allCards = new ArrayList<>();
     for(Suit suit : Suit.values()) {
       for (int cardPoint = 1; cardPoint < 14; cardPoint++) {
