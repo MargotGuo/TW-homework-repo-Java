@@ -1,20 +1,19 @@
 package com;
 
-import com.direction.Direction;
-import com.direction.West;
+import com.direction.Directions;
 
 public class Main {
   public static void main(String[] args) {
-    Direction west = new West();
-    System.out.println(west);  // Direction{direction=W}
+    Directions west = Directions.WEST;
+    System.out.println(west);
 
-    Direction south = west.turnLeft();
-    System.out.println(south);  // Direction{direction=S}
+    Directions south = west.turnLeft();
+    System.out.println(south);
 
-    Direction north = west.turnRight();
-    System.out.println(north);  // Direction{direction=N}
+    Directions north = west.turnRight();
+    System.out.println(north);
 
-    System.out.println(west.equals(south));       // false
-    System.out.println(west.equals(new West()));  // true
+    System.out.println(west.equals(south));
+    System.out.println(west.equals(Directions.WEST));
   }
 }
