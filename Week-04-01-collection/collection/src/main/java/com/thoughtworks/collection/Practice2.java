@@ -10,23 +10,19 @@ public class Practice2 {
     List<Integer> list = getNumbers();
 
     //分别用for循环、增强for循环、迭代器遍历并打印getNumbers返回的List
-
     // for 循环
-    System.out.println("======= for loop =======");
     for (int i = 0; i < list.size(); i++) {
       System.out.printf("%d ", list.get(i));
     }
     System.out.println();
 
     // 增强 for 循环
-    System.out.println("======= enhanced 'for' =======");
     for (int number : list) {
       System.out.printf("%d ", number);
     }
     System.out.println();
 
     //迭代器
-    System.out.println("======= iterator =======");
     Iterator<Integer> iterator = list.iterator();
     while (iterator.hasNext()) {
       System.out.printf("%d ", iterator.next());
@@ -44,6 +40,4 @@ public class Practice2 {
     }
     return list;
   }
-
-
 }
