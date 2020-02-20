@@ -5,35 +5,35 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MemoryRepository implements Repository<Student> {
+public class MemoryRepository<E> implements Repository<E> {
 
-  private Map<String, Student> students = new HashMap<>();
+  private Map<String, E> entities = new HashMap<>();
 
   @Override
-  public void save(String id, Student student) {
-    students.put(id, student);
+  public void save(String id, E entity) {
+    entities.put(id, entity);
   }
 
   @Override
-  public Student get(String id) {
-    return students.get(id);
+  public E get(String id) {
+    return entities.get(id);
   }
 
   @Override
   public void delete(String id) {
-    students.remove(id);
+    entities.remove(id);
   }
 
   @Override
-  public void update(String id, Student student) {
-    students.put(id, student);
+  public void update(String id, E entity) {
+    entities.put(id, entity);
   }
 
   @Override
-  public List<Student> list() {
-    List<Student> studentList = new LinkedList<>();
-    for (String id : students.keySet()) {
-      studentList.add(students.get(id));
+  public List<E> list() {
+    List<E> studentList = new LinkedList<>();
+    for (String id : entities.keySet()) {
+      studentList.add(entities.get(id));
     }
     return studentList;
   }
