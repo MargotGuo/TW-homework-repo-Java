@@ -21,7 +21,6 @@ public class SuperClassWithDefaultConstructor {
   }
 
   public SuperClassWithDefaultConstructor(String name) {
-
     addLog("SuperClassWithDefaultConstructor.constructor(String)");
   }
 
