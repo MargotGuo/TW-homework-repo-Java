@@ -15,12 +15,8 @@ public class FileUtil {
    */
 
   public static void copyDirectory(File from, File to) throws IOException {
-    if (!to.exists()) {
-      to.mkdir();
-    }
-    if (to.listFiles() != null) {
-      clearFolder(to);
-    }
+
+    preActionForToDirectory(to);
 
     File[] fromFiles = from.listFiles();
     if (fromFiles != null) {
@@ -33,6 +29,15 @@ public class FileUtil {
           Files.copy(file.toPath(), targetFile.toPath());
         }
       }
+    }
+  }
+
+  private static void preActionForToDirectory(File to) {
+    if (!to.exists()) {
+      to.mkdir();
+    }
+    if (to.listFiles() != null) {
+      clearFolder(to);
     }
   }
 
