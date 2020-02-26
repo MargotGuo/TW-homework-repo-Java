@@ -58,6 +58,7 @@ class FileUtilTest {
         File to = TO_PATH.toFile();
         commonCreate();
 
+
         FileUtil.copyDirectory(from, to);
 
         assertDirsEqual(from, to);

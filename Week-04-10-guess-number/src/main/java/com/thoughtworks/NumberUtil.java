@@ -1,14 +1,12 @@
 package com.thoughtworks;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class RandomNumberUtil {
+public class NumberUtil {
 
-  private RandomNumberUtil() {
-  }
+  private NumberUtil() {}
 
   public static String getRandomNumber() {
     StringBuilder randomNumber = new StringBuilder();
