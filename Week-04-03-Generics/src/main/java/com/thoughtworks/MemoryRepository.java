@@ -31,10 +31,10 @@ public class MemoryRepository<E> implements Repository<E> {
 
   @Override
   public List<E> list() {
-    List<E> studentList = new LinkedList<>();
+    List<E> list = new LinkedList<>();
     for (String id : entities.keySet()) {
-      studentList.add(entities.get(id));
+      list.add(entities.get(id));
     }
-    return studentList;
+    return list;
   }
 }

@@ -13,7 +13,7 @@ public class App {
         new Student("5", "王五"),
         new Student("6", "赵六"),
         new Student("7", "钱七"));
-    MemoryRepository<Student> studentRepository = new MemoryRepository();
+    MemoryRepository<Student> studentRepository = new MemoryRepository<>();
     allStudents.forEach(student -> studentRepository.save(student.getId(), student));
 
     // 从仓库中获取张三并打印
