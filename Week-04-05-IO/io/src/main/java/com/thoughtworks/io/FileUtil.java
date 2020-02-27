@@ -16,35 +16,34 @@ public class FileUtil {
 
   public static void copyDirectory(File from, File to) throws IOException {
 
-    preActionForToDirectory(to);
+    formatTargetDirectory(to);
 
-    File[] fromFiles = from.listFiles();
-    if (fromFiles != null) {
-      for (File file : fromFiles) {
-        File targetFile = new File(to + File.separator + file.getName());
-        if (file.isDirectory()) {
-          targetFile.mkdir();
-          copyDirectory(file, targetFile);
+    File[] originalFiles = from.listFiles();
+    if (originalFiles != null) {
+      for (File currentFile : originalFiles) {
+        File targetFile = new File(to + File.separator + currentFile.getName());
+        if (currentFile.isDirectory()) {
+          copyDirectory(currentFile, targetFile);
         } else {
-          Files.copy(file.toPath(), targetFile.toPath());
+          Files.copy(currentFile.toPath(), targetFile.toPath());
         }
       }
     }
   }
 
-  private static void preActionForToDirectory(File to) {
-    if (!to.exists()) {
-      to.mkdir();
+  private static void formatTargetDirectory(File directory) {
+    if (!directory.exists()) {
+      directory.mkdir();
     }
-    if (to.listFiles() != null) {
-      clearFolder(to);
+    if (directory.listFiles() != null) {
+      clearFolder(directory);
     }
   }
 
-  private static void clearFolder(File to) {
-    File[] files = to.listFiles();
-    assert files != null;
-    for (File file : files) {
+  private static void clearFolder(File directory) {
+    File[] fileList = directory.listFiles();
+    assert fileList != null;
+    for (File file : fileList) {
       if (file.isDirectory()) {
         clearFolder(file);
       }
