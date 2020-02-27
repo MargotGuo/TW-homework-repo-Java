@@ -1,21 +1,21 @@
-package com.thoughtworks;
+package com.thoughtworks.appUtils;
 
 public class Calculator {
 
   private Calculator() {}
 
-  public static String getOutput(String currentTry, String answer) {
+  public static String getResult(String currentTry, String answer) {
     int correctNumber = 0;
-    int correctButNotRightSite = 0;
+    int correctButWrongSite = 0;
     for (int i = 0; i < currentTry.length(); i++) {
       if (answer.contains(String.valueOf(currentTry.charAt(i)))) {
         if (answer.charAt(i) == currentTry.charAt(i)) {
           correctNumber++;
         } else {
-          correctButNotRightSite++;
+          correctButWrongSite++;
         }
       }
     }
-    return String.format("%s %sA%sB\n", currentTry, correctNumber, correctButNotRightSite);
+    return String.format("%sA%sB", correctNumber, correctButWrongSite);
   }
 }

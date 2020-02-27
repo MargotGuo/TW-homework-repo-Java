@@ -1,49 +1,46 @@
 package com.thoughtworks;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
+import com.thoughtworks.exception.WrongInputException;
+import com.thoughtworks.numberGetters.NumberGetter;
+import com.thoughtworks.numberGetters.FileGetter;
+import com.thoughtworks.numberGetters.InputGetter;
+import com.thoughtworks.numberGetters.RandomGetter;
+import com.thoughtworks.appUtils.Calculator;
+import com.thoughtworks.appUtils.FormatChecker;
 
 public class App {
 
   public static void main(String[] args) {
-    String answer = NumberUtil.getRandomNumber();
-    String currentTry = getGuessNumberFromFile();
+    // initialize answer
+    String answer = new RandomGetter().guessNumbers();
 
-    StringBuilder stringBuilder = new StringBuilder(Calculator.getOutput(currentTry, answer));
-    System.out.print(stringBuilder);
+    // guess from file
+    NumberGetter fileGetter = new FileGetter("src\\main\\resources\\answer.txt");
+    String currentGuess = fileGetter.guessNumbers();
+    String currentResult = Calculator.getResult(currentGuess, answer);
+    StringBuilder output = new StringBuilder(String.format("%s %s\n", currentGuess, currentResult));
+    System.out.print(output);
+
+    // guess from input
     int count = 1;
-
-    Scanner scanner = new Scanner(System.in);
-    while (count < 6 && !currentTry.equals(answer)) {
-      currentTry = scanner.nextLine();
+    NumberGetter inputGetter = new InputGetter();
+    while (count < 6 && !currentGuess.equals(answer)) {
+      currentGuess = inputGetter.guessNumbers();
       try {
-        NumberUtil.checkFormat(currentTry);
-        stringBuilder.append(Calculator.getOutput(currentTry, answer));
+        FormatChecker.checkFormat(currentGuess);
+        output.append(String.format("%s %s\n", currentGuess, Calculator.getResult(currentGuess, answer)));
         count++;
       } catch (WrongInputException e) {
-        stringBuilder.append(String.format("%s Wrong input\n", currentTry));
+        output.append(String.format("%s Wrong input\n", currentGuess));
       }
-      System.out.print(stringBuilder);
+      System.out.print(output);
     }
 
-    if (count == 6 && !currentTry.equals(answer)) {
+    // print result
+    if (count == 6 && !currentGuess.equals(answer)) {
       System.out.printf("Unfortunately, you have no chance, the answer is %s!", answer);
     } else {
       System.out.println("Congratulations, you win!");
     }
-  }
-
-  private static String getGuessNumberFromFile() {
-    String currentTry;
-    try {
-      BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\answer.txt"));
-      currentTry = bufferedReader.readLine();
-      NumberUtil.checkFormat(currentTry);
-    } catch (IOException | WrongInputException e) {
-      currentTry = NumberUtil.getRandomNumber();
-    }
-    return currentTry;
   }
 }
