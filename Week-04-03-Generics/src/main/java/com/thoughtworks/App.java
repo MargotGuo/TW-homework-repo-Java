@@ -18,14 +18,18 @@ public class App {
 
     // 从仓库中获取张三并打印
     Student zhangSan = studentRepository.get("3");
+    System.out.println("get a student");
     System.out.println(zhangSan);
 
     // 从仓库中删除李四
-    studentRepository.delete("4");
+    Student deleteStudent = studentRepository.delete("4");
+    System.out.println("delete a student");
+    System.out.println(deleteStudent);
 
     // 然后新建一个学生(5,冯五)替换仓库中的王五
     Student fengWu = new Student("5", "冯五");
-    studentRepository.update(fengWu.getId(), fengWu);
+    boolean update = studentRepository.update(fengWu.getId(), fengWu);
+    System.out.printf("successfully update? %s\n", update);
 
     // 获取仓库中的所有学生并用 printList 方法打印到控制台
     List<Student> studentList = studentRepository.list();

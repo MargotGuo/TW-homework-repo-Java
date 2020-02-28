@@ -10,8 +10,12 @@ public class MemoryRepository<E> implements Repository<E> {
   private Map<String, E> entities = new HashMap<>();
 
   @Override
-  public void save(String id, E entity) {
+  public boolean save(String id, E entity) {
+    if (entities.containsKey(id)) {
+      return false;
+    }
     entities.put(id, entity);
+    return true;
   }
 
   @Override
@@ -20,13 +24,17 @@ public class MemoryRepository<E> implements Repository<E> {
   }
 
   @Override
-  public void delete(String id) {
-    entities.remove(id);
+  public E delete(String id) {
+    return entities.remove(id);
   }
 
   @Override
-  public void update(String id, E entity) {
-    entities.put(id, entity);
+  public boolean update(String id, E entity) {
+    if (entities.containsKey(id)) {
+      entities.put(id, entity);
+      return true;
+    }
+    return false;
   }
 
   @Override
