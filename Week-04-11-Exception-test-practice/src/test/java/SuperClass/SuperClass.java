@@ -11,7 +11,7 @@ public class SuperClass {
   public SuperClass() {}
 
   {
-    System.out.println("I’m SuperClass class");
+    System.out.println("I'm SuperClass class");
   }
 
   static {

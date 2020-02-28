@@ -9,7 +9,7 @@ public class SubClass extends SuperClass{
   }
 
   public SubClass() {
-    System.out.println("I’m SubClass class");
+    System.out.println("I'm SubClass class");
   }
 
   static {
