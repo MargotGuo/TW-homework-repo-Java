@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomGetter implements NumberGetter {
   @Override
-  public String guessNumbers() {
+  public String getNumbers() {
     StringBuilder distinctNumbers = new StringBuilder();
     Random random = new Random();
     while (distinctNumbers.length() < 4) {

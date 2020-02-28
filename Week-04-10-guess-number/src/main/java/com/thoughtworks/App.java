@@ -4,7 +4,6 @@ import com.thoughtworks.exception.WrongInputException;
 import com.thoughtworks.numberGetters.NumberGetter;
 import com.thoughtworks.numberGetters.FileGetter;
 import com.thoughtworks.numberGetters.InputGetter;
-import com.thoughtworks.numberGetters.RandomGetter;
 import com.thoughtworks.appUtils.Calculator;
 import com.thoughtworks.appUtils.FormatChecker;
 
@@ -12,20 +11,17 @@ public class App {
 
   public static void main(String[] args) {
     // initialize answer
-    String answer = new RandomGetter().guessNumbers();
-
-    // guess from file
     NumberGetter fileGetter = new FileGetter("src\\main\\resources\\answer.txt");
-    String currentGuess = fileGetter.guessNumbers();
-    String currentResult = Calculator.getResult(currentGuess, answer);
-    StringBuilder output = new StringBuilder(String.format("%s %s\n", currentGuess, currentResult));
-    System.out.print(output);
+    String answer = fileGetter.getNumbers();
+
+    String currentGuess = "";
+    StringBuilder output = new StringBuilder();
 
     // guess from input
-    int count = 1;
+    int count = 0;
     NumberGetter inputGetter = new InputGetter();
     while (count < 6 && !currentGuess.equals(answer)) {
-      currentGuess = inputGetter.guessNumbers();
+      currentGuess = inputGetter.getNumbers();
       try {
         FormatChecker.checkFormat(currentGuess);
         output.append(String.format("%s %s\n", currentGuess, Calculator.getResult(currentGuess, answer)));

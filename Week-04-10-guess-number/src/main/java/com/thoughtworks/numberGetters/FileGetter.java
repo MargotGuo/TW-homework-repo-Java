@@ -17,14 +17,14 @@ public class FileGetter implements NumberGetter {
   }
 
   @Override
-  public String guessNumbers() {
+  public String getNumbers() {
     String numbers;
     try {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile));
       numbers = bufferedReader.readLine();
       FormatChecker.checkFormat(numbers);
     } catch (IOException | WrongInputException e) {
-      numbers = new RandomGetter().guessNumbers();
+      numbers = new RandomGetter().getNumbers();
     }
     return numbers;
   }
