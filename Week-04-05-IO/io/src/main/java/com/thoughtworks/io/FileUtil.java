@@ -13,6 +13,9 @@ public class FileUtil {
    * <p>
    * 例如把a文件夹(a文件夹下有1.txt和一个空文件夹c)复制到b文件夹，复制完成以后b文件夹下也有一个1.txt和空文件夹c
    */
+//  public static void main(String[] args) {
+//    System.out.println(File.separator);
+//  }
 
   public static void copyDirectory(File from, File to) throws IOException {
 
@@ -33,7 +36,7 @@ public class FileUtil {
 
   private static void formatTargetDirectory(File directory) {
     if (!directory.exists()) {
-      directory.mkdir();
+      boolean mkdir = directory.mkdir();
     }
     if (directory.listFiles() != null) {
       clearFolder(directory);

@@ -93,14 +93,11 @@ class GenericTest {
   // The method should only accept `Number` and the number should implement `Comparable<T>`
   // Can use compareTo method to compare
   private static <T extends Number & Comparable<T>> T min(T[] values) {
-//    List<T> valueList = Arrays.asList(values);
-//    Collections.sort(valueList);
-//    return valueList.get(0);
     T min = values[0];
     for (T value : values) {
       if (min.compareTo(value) > 0) {
         min = value;
-      };
+      }
     }
     return min;
   }
