@@ -14,7 +14,7 @@ public class FormatChecker {
     for (int i = 0; i < numbers.length(); i++) {
       distinctNumber.add(numbers.charAt(i));
     }
-    if (distinctNumber.size() != 4) {
+    if (distinctNumber.size() != 4 || numbers.length() != 4) {
       throw new WrongInputException("Wrong input");
     }
   }
