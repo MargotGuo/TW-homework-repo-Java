@@ -10,12 +10,13 @@ import com.thoughtworks.appUtils.FormatChecker;
 public class App {
 
   public static void main(String[] args) {
+
     // initialize answer
     NumberGetter fileGetter = new FileGetter("src\\main\\resources\\answer.txt");
     String answer = fileGetter.getNumbers();
 
     String currentGuess = "";
-    StringBuilder output = new StringBuilder();
+    StringBuilder outputInfomation = new StringBuilder();
 
     // guess from input
     int count = 0;
@@ -24,12 +25,12 @@ public class App {
       currentGuess = inputGetter.getNumbers();
       try {
         FormatChecker.checkFormat(currentGuess);
-        output.append(String.format("%s %s\n", currentGuess, Calculator.getResult(currentGuess, answer)));
+        outputInfomation.append(String.format("%s %s\n", currentGuess, Calculator.getResult(currentGuess, answer)));
         count++;
       } catch (WrongInputException e) {
-        output.append(String.format("%s Wrong input\n", currentGuess));
+        outputInfomation.append(String.format("%s Wrong input\n", currentGuess));
       }
-      System.out.print(output);
+      System.out.print(outputInfomation);
     }
 
     // print result

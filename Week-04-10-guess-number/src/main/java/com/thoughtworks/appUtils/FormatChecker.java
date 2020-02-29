@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FormatChecker {
+
+  private FormatChecker() {}
+
   public static void checkFormat(String numbers) {
     Set<Character> distinctNumber = new HashSet<>();
     for (int i = 0; i < numbers.length(); i++) {
