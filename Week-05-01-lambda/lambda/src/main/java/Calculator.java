@@ -1,4 +1,4 @@
 @FunctionalInterface
-public interface NumberOperator<T> {
+public interface Calculator<T> {
   T getSquare(T number);
 }

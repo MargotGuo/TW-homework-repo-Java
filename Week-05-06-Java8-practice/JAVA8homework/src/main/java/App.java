@@ -1,8 +1,6 @@
 import entity.MasterNumber;
-import entity.Person;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class App {
 

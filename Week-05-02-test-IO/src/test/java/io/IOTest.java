@@ -29,7 +29,7 @@ public class IOTest {
   private static void writeAllText(String message, Path filePath, Charset charset) throws IOException {
     // TODO: please implement the method to writer text to file using `PrintWriter`.
     // Use try-with-resources Statement
-    try(PrintWriter printWriter = new PrintWriter(Files.newOutputStream(filePath));) {
+    try(PrintWriter printWriter = new PrintWriter(filePath.toString(), charset.name())) {
       printWriter.print(message);
     }
   }
@@ -61,7 +61,7 @@ public class IOTest {
 
     // TODO: please read `actualFirstValue` and `actualPi` from `filePath`
     //Use try-with-resources Statement
-    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(String.valueOf(filePath)))) {
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath.toString()))) {
       actualFirstValue = Integer.parseInt(bufferedReader.readLine());
       actualPi = Double.parseDouble(bufferedReader.readLine());
     }
