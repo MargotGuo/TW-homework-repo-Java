@@ -65,7 +65,7 @@ public class App {
         .map(Transaction::getTrader)
         .filter(trader -> trader.getCity().equals("Cambridge"))
         .distinct()
-        .sorted(Comparator.comparingInt(trader -> trader.getName().charAt(0)))
+        .sorted(Comparator.comparing(Trader::getName))
         .collect(Collectors.toList());
   }
 
@@ -73,7 +73,7 @@ public class App {
     return transactions.stream()
         .map(transaction -> transaction.getTrader().getName())
         .distinct()
-        .sorted(Comparator.comparingInt(name -> name.charAt(0)))
+        .sorted(String::compareTo)
         .collect(Collectors.toList());
   }
 
@@ -92,12 +92,12 @@ public class App {
   public static int getMaxTransactionValue(List<Transaction> transactions) {
     return transactions.stream()
         .map(Transaction::getValue)
-        .reduce(0, (maxValue, currentValue) -> currentValue > maxValue ? currentValue : maxValue);
+        .reduce(0, Math::max);
   }
 
   public static Transaction getMinTransaction(List<Transaction> transactions) {
     return transactions.stream()
-        .reduce(transactions.get(0), (minTransaction, currentTransaction) ->
-            currentTransaction.getValue() < minTransaction.getValue() ? currentTransaction : minTransaction);
+        .min(Comparator.comparingInt(Transaction::getValue))
+        .orElse(transactions.get(0));
   }
 }
