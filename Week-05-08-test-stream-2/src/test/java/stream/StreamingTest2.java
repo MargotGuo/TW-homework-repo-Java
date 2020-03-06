@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +45,7 @@ public class StreamingTest2 {
 
     // TODO: please calculate the total number of characters using `reduce`.
     // <--start
-    Integer total = words.stream().map(word -> word.length()).reduce(0, Integer::sum, Integer::sum);
+    Integer total = words.stream().map(String::length).reduce(0, Integer::sum);
     // --end-->
 
     assertEquals(15, total.intValue());
@@ -62,15 +60,8 @@ public class StreamingTest2 {
     //                  BiConsumer<R, ? super T> accumulator,
     //                  BiConsumer<R, R> combiner) method
     // <--start
-    List<String> list = stream.collect(ArrayList::new, ArrayList::add,
-        new BiConsumer<ArrayList<String>, ArrayList<String>>() {
-          @Override
-          public void accept(ArrayList<String> strings, ArrayList<String> strings2) {
-            strings.add(strings2.get(1));
-          }
-        });
+    List<String> list = stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     // --end-->
-//    List<String> list = stream.collect(Collectors.toList());
 
     assertEquals(ArrayList.class, list.getClass());
     assertIterableEquals(
@@ -78,7 +69,6 @@ public class StreamingTest2 {
         list
     );
   }
-
 
   @Test
   void should_collect_to_map() {
@@ -115,16 +105,28 @@ public class StreamingTest2 {
     // <--start
     HashMap<String, List<Integer>> map = stream.collect(
         HashMap::new,
-        (aMap, aPair) -> {
-          Set<String> strings = aMap.keySet();
-          String key = aPair.getKey();
+
+        (stringListHashMap, pair) -> {
+          Set<String> strings = stringListHashMap.keySet();
+          String key = pair.getKey();
           if (strings.contains(key)) {
-            aMap.get(key).add(aPair.getValue());
+            stringListHashMap.get(key).add(pair.getValue());
           } else {
-            aMap.put(aPair.getKey(), Collections.singletonList(aPair.getValue()));
+            stringListHashMap.put(pair.getKey(), Collections.singletonList(pair.getValue()));
           }
         },
-        (stringListHashMap, stringListHashMap2) -> stringListHashMap.putAll(stringListHashMap2));
+
+        (map1, map2) -> {
+          Set<String> keySet = map2.keySet();
+          keySet.forEach(key -> {
+            List<Integer> newValueList = new ArrayList<>();
+            if (map1.containsKey(key)) {
+              newValueList.addAll(map1.get(key));
+            }
+            newValueList.addAll(map2.get(key));
+            map1.put(key, newValueList);
+          });
+        });
     // --end-->
 
     assertEquals(2, map.size());
@@ -142,7 +144,11 @@ public class StreamingTest2 {
 
     // TODO: implement grouping collector using `stream.collect`. This time please use `Collectors.groupingBy`
     // <--start
-    Map<String, List<Integer>> map = null;
+    Map<String, List<Integer>> map = stream.collect(
+        Collectors.groupingBy(
+            KeyValuePair::getKey,
+            Collectors.mapping(KeyValuePair::getValue, Collectors.toList())
+        ));
     // --end-->
 
     assertEquals(2, map.size());
@@ -162,7 +168,8 @@ public class StreamingTest2 {
     // TODO: implement grouping collector using `stream.collect`. You should use `Collectors.groupingBy` and
     // TODO: downstream collector.
     // <--start
-    Map<String, Long> map = null;
+    Map<String, Long> map = stream.collect(
+        Collectors.groupingBy(KeyValuePair::getKey, Collectors.counting()));
     // --end-->
 
     assertEquals(2, map.size());
@@ -180,8 +187,11 @@ public class StreamingTest2 {
 
     // TODO: implement grouping collector using `stream.collect`. You should use `Collectors.groupingBy` and
     // TODO: downstream collector.
-    // <--start
-    Map<String, Integer> map = null;
+    Map<String, Integer> map = stream.collect(
+        Collectors.groupingBy(
+            KeyValuePair::getKey,
+            Collectors.mapping(KeyValuePair::getValue, Collectors.reducing(0, Integer::sum))
+        ));
     // --end-->
 
     assertEquals(2, map.size());
