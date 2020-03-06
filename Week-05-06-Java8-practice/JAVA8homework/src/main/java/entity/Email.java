@@ -37,6 +37,6 @@ public class Email {
 
   @Override
   public String toString() {
-    return String.format("emailAddress: %s", emailAddress);
+    return String.format("{emailAddress: %s}", emailAddress);
   }
 }

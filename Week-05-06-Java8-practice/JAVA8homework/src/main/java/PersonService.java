@@ -21,10 +21,12 @@ public class PersonService {
   public Stream<Person> getPersonByMasterNumbers(List<MasterNumber> numbers) {
     //TODO: Add the code to return people by numbers
     // Use groupToPeople() method
-    List<String> masterNumbers = numbers.stream().map(MasterNumber::getNumber).collect(Collectors.toList());
-    Optional<Optional<PersonSet>> personSet = Optional.ofNullable(people.get(masterNumbers));
-    if (personSet.isPresent() && personSet.get().isPresent()) {
-      return personSet.get().get().groupToPeople();
+    List<String> masterNumbers = numbers.stream()
+        .map(MasterNumber::getNumber)
+        .collect(Collectors.toList());
+    Optional<PersonSet> personSet = people.getOrDefault(masterNumbers, Optional.empty());
+    if (personSet.isPresent()) {
+      return personSet.get().groupToPeople();
     }
     return Stream.empty();
   }

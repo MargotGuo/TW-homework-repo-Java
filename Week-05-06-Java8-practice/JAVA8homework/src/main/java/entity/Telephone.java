@@ -40,7 +40,7 @@ public class Telephone {
 
   @Override
   public String toString() {
-    return String.format("countryCode: %s, telephoneNumber: %s", countryCode, telephoneNumber);
+    return String.format("{countryCode: %s, telephoneNumber: %s}", countryCode, telephoneNumber);
   }
 }
 
