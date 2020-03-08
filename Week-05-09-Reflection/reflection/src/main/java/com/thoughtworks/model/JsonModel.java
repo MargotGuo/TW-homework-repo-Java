@@ -12,6 +12,9 @@ public class JsonModel {
     private List<Parrot> parrotList = new ArrayList<>();
     private List<Desk> deskList = new ArrayList<>();
 
+    public JsonModel() {
+    }
+
     public JsonModel(String name, int age, Animal animal, List<String> stringList, List<Parrot> parrotList, List<Desk> deskList) {
         this.name = name;
         this.age = age;

@@ -54,8 +54,9 @@ public class Parrot extends Animal {
     @Override
     public String toString() {
         return "Parrot{" +
-                "flySpeed=" + flySpeed +
-                ", canTalk=" + canTalk +
-                '}';
+            "flySpeed=" + flySpeed +
+            ", canTalk=" + canTalk +
+            ", petName='" + petName + '\'' +
+            '}';
     }
 }
