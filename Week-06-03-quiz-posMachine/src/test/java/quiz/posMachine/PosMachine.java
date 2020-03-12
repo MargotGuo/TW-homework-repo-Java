@@ -17,19 +17,19 @@ public class PosMachine {
   private static final String SPLIT_LINE = "------------------------------------------------------------";
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  private Product[] productList;
+  private Product[] products;
 
   public void readDataSource(Reader reader) throws IOException {
     // TODO: please implement the following method to pass the test
     // <--start
-    productList = objectMapper.readValue(reader, Product[].class);
+    products = objectMapper.readValue(reader, Product[].class);
     // --end-->
   }
 
   public String printReceipt(String barcodeContent) throws IOException {
     // TODO: please implement the following method to pass the test
     // <--start
-    if (productList == null) {
+    if (products == null) {
       throw new IllegalStateException();
     }
 
@@ -57,10 +57,10 @@ public class PosMachine {
   }
 
   private Product getProductById(String id) {
-    Optional<Product> matchedProduct = Arrays.stream(productList)
+    return Arrays.stream(products)
         .filter(product -> product.getId().equals(id))
-        .findFirst();
-    return matchedProduct.orElse(null);
+        .findFirst()
+        .orElse(null);
   }
 }
 
