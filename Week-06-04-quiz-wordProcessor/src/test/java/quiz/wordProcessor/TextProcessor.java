@@ -1,6 +1,11 @@
 package quiz.wordProcessor;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class TextProcessor {
   private final TextProcessorSettings settings;
@@ -26,56 +31,39 @@ class TextProcessor {
   String process(String text) {
     // TODO: Please implement the method to pass all the test
     // <--start
-    if (text == null) {
-      throw new IllegalArgumentException();
-    }
-
-    StringBuilder result = new StringBuilder();
-    String[] words = splitToWordArray(text);
-
-    int currentLength = 0;
-    for (String word : words) {
-      String lineInformation = getLineInformation(currentLength, word.length(), settings.getWidth());
-      currentLength += word.length();
-      result.append(String.format("%s%s;", word, lineInformation));
-    }
-    return result.toString();
+    AtomicInteger textLength = new AtomicInteger();
+    return getWordList(text).stream()
+        .map(word -> String.format("%s(%s);", word, getLineDetail(textLength.addAndGet(word.length()), word.length())))
+        .collect(Collectors.joining(""));
     // --end-->
   }
 
-  private String[] splitToWordArray(String text) {
-    StringBuilder stringBuilder = new StringBuilder();
-    for (int i = 0; i < text.length() - 1; i++) {
-      stringBuilder.append(text.charAt(i));
-      if ((text.charAt(i) == ' ' && text.charAt(i + 1) != ' ') ||
-          (text.charAt(i) != ' ' && text.charAt(i + 1) == ' ')) {
-        stringBuilder.append("my_separator");
+  private List<String> getWordList(String text) {
+    return Optional.ofNullable(text).map(sentence -> {
+      List<String> wordList = new ArrayList<>();
+      int startFlag = 0;
+      for (int i = 1; i < sentence.length(); i++) {
+        if (settings.isWhitespace(sentence.charAt(i - 1)) != settings.isWhitespace(sentence.charAt(i))) {
+          wordList.add(sentence.substring(startFlag, i));
+          startFlag = i;
+        }
       }
-    }
-    stringBuilder.append(text.charAt(text.length() - 1));
-    return stringBuilder.toString().split("my_separator");
+      wordList.add(sentence.substring(startFlag));
+      return wordList;
+    }).orElseThrow(IllegalArgumentException::new);
   }
 
-  private String getLineInformation(int currentLength, int length, int width) {
-
-    int startLine = (currentLength + 1) % width == 0 ?
-        (currentLength + 1) / width : (currentLength + 1) / width + 1;
-    int endLine = ((currentLength + length) % width) == 0 ?
-        ((currentLength + length) / width) : ((currentLength + length) / width) + 1;
-
-    String lineInformation;
-    if (endLine - startLine == 0) {
-      lineInformation = String.format("(%s)", endLine);
-    } else {
-      StringBuilder stringBuilder = new StringBuilder();
-      for (int i = startLine; i <= endLine; i++) {
-        stringBuilder.append(i).append(",");
-      }
-      stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
-      lineInformation = String.format("(%s)", stringBuilder.toString());
-    }
-    return lineInformation;
+  private String getLineDetail(int sentenceLength, int wordLength) {
+    int startLine = locateLine(sentenceLength - wordLength + 1);
+    int endLine = locateLine(sentenceLength);
+    return IntStream.range(startLine, endLine + 1)
+        .mapToObj(String::valueOf)
+        .collect(Collectors.joining(","));
   }
 
+  private int locateLine(int totalLength) {
+    int width = settings.getWidth();
+    return totalLength % width == 0 ? totalLength / width : totalLength / width + 1;
+  }
 }
 
