@@ -26,6 +26,7 @@ public class LambdaTest {
     // TODO: please bind lambda to instanceMethod(use method reference).
     // <--start
     StringFunction lambda = this::instanceMethod;
+//    StringFunction lambda = () -> instanceMethod();
     // --end-->
 
     assertEquals("instanceMethod", lambda.getString());
@@ -36,6 +37,7 @@ public class LambdaTest {
     // TODO: please bind lambda to staticMethod(use method reference)
     // <--start
     StringFunction lambda = LambdaTest::staticMethod;
+//    StringFunction lambda = () -> LambdaTest.staticMethod();
     // --end-->
 
     assertEquals("staticMethod", lambda.getString());

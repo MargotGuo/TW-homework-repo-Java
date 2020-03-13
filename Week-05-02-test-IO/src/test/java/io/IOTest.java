@@ -51,7 +51,7 @@ public class IOTest {
 
     // TODO: please write `firstValue` and `pi` to `filePath`
     //Use try-with-resources Statement
-    try(PrintWriter printWriter = new PrintWriter(Files.newOutputStream(filePath));) {
+    try(PrintWriter printWriter = new PrintWriter(filePath.toString())) {
       printWriter.println(firstValue);
       printWriter.println(pi);
     }

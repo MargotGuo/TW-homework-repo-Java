@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -215,11 +216,13 @@ class StreamingTest {
         .iterate(0, i -> i + 1)
         .limit(20)
         .filter(v -> v % 2 == 0)
-        .peek(v -> holder.setValue(holder.getValue() + v));
+        .peek(v -> {
+          holder.setValue(holder.getValue() + v);
+          v = v + 1;
+        });
     // 0, 2, 4, ..., 16, 18 累加
 
-    hookStream.forEach(i -> {
-    });
+    hookStream.forEach(i -> System.out.println(i));
 
     // TODO: please modify the following code to pass the test
     // <--start

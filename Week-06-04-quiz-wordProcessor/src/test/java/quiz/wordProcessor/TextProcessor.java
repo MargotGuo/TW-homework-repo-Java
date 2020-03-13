@@ -1,5 +1,7 @@
 package quiz.wordProcessor;
 
+import java.util.Arrays;
+
 class TextProcessor {
   private final TextProcessorSettings settings;
 

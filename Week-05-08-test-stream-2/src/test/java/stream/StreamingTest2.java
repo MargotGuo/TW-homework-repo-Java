@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -169,7 +170,12 @@ public class StreamingTest2 {
     // TODO: downstream collector.
     // <--start
     Map<String, Long> map = stream.collect(
-        Collectors.groupingBy(KeyValuePair::getKey, Collectors.counting()));
+        Collectors.groupingBy(new Function<KeyValuePair<String, Integer>, String>() {
+          @Override
+          public String apply(KeyValuePair<String, Integer> stringIntegerKeyValuePair) {
+            return stringIntegerKeyValuePair.getKey();
+          }
+        }, Collectors.counting()));
     // --end-->
 
     assertEquals(2, map.size());
