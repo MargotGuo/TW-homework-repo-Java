@@ -15,14 +15,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PosMachine {
   private static final String LINE = System.lineSeparator();
   private static final String SPLIT_LINE = "------------------------------------------------------------";
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static ObjectMapper objectMapper = new ObjectMapper();
 
-  private Product[] products;
+//  private Product[] products;
+  private Map<String, Product> products;
 
   public void readDataSource(Reader reader) throws IOException {
     // TODO: please implement the following method to pass the test
     // <--start
-    products = objectMapper.readValue(reader, Product[].class);
+    Product[] productArray = objectMapper.readValue(reader, Product[].class);
+    products = Arrays.stream(productArray).collect(Collectors.toMap(Product::getId, product -> product));
     // --end-->
   }
 
@@ -37,7 +39,7 @@ public class PosMachine {
     AtomicInteger sumPrice = new AtomicInteger();
 
     Map<Product, Long> productCountMap = Arrays.stream(parseBarcode(barcodeContent))
-        .collect(Collectors.groupingBy(this::getProductById, Collectors.counting()));
+        .collect(Collectors.groupingBy(id -> products.get(id), Collectors.counting()));
     productCountMap.keySet().stream()
         .sorted(Comparator.comparing(Product::getId))
         .forEach(product -> {
@@ -54,13 +56,6 @@ public class PosMachine {
   private String[] parseBarcode(String barcodeContent) throws IOException {
     String idArray = Optional.ofNullable(barcodeContent).orElse("[]");
     return objectMapper.readValue(idArray, String[].class);
-  }
-
-  private Product getProductById(String id) {
-    return Arrays.stream(products)
-        .filter(product -> product.getId().equals(id))
-        .findFirst()
-        .orElse(null);
   }
 }
 
