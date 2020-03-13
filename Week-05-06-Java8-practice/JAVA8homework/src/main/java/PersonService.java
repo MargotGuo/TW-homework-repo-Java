@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,11 +25,8 @@ public class PersonService {
     List<String> masterNumbers = numbers.stream()
         .map(MasterNumber::getNumber)
         .collect(Collectors.toList());
-    Optional<PersonSet> personSet = people.getOrDefault(masterNumbers, Optional.empty());
-    if (personSet.isPresent()) {
-      return personSet.get().groupToPeople();
-    }
-    return Stream.empty();
+    return people.getOrDefault(masterNumbers, Optional.empty())
+        .map(PersonSet::groupToPeople)
+        .orElse(Stream.empty());
   }
-
 }
