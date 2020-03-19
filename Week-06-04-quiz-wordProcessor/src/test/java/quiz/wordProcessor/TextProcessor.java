@@ -63,7 +63,7 @@ class TextProcessor {
 
   private int locateLine(int totalLength) {
     int width = settings.getWidth();
-    return totalLength % width == 0 ? totalLength / width : totalLength / width + 1;
+    return (int) Math.ceil(totalLength * 1.0 / width);
   }
 }
 
