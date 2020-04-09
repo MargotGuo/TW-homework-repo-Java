@@ -221,6 +221,7 @@ class StreamingTest {
           v = v + 1;
         });
     // 0, 2, 4, ..., 16, 18 累加
+    // peek 不会中断流
 
     hookStream.forEach(i -> System.out.println(i));
 
