@@ -170,12 +170,7 @@ public class StreamingTest2 {
     // TODO: downstream collector.
     // <--start
     Map<String, Long> map = stream.collect(
-        Collectors.groupingBy(new Function<KeyValuePair<String, Integer>, String>() {
-          @Override
-          public String apply(KeyValuePair<String, Integer> stringIntegerKeyValuePair) {
-            return stringIntegerKeyValuePair.getKey();
-          }
-        }, Collectors.counting()));
+        Collectors.groupingBy(KeyValuePair::getKey, Collectors.counting()));
     // --end-->
 
     assertEquals(2, map.size());
